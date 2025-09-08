@@ -4,7 +4,9 @@
  using std::cout;
 int main()
 {
-    cout << echo_variable(5)<< "\n";
+    int result = add_nums(5,7);
+        cout << "The sum is:" << result << "\n";
+    
 
     return 0;
 }

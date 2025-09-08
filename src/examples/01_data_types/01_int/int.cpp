@@ -10,3 +10,7 @@ int echo_variable(int num)
 {
     return num;
 }
+
+int add_nums(int num1, int num2){
+    return num1 + num2;
+}
