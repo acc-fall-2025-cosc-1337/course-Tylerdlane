@@ -1,42 +1,52 @@
-#include "tic_tac_toe.h"
-#include "tic_tac_toe_manager.h"
 #include <iostream>
+#include <memory>
+#include "tic_tac_toe_manager.h"
+#include "tic_tac_toe_3.h"
+#include "tic_tac_toe_4.h"
 
 int main()
 {
     TicTacToeManager manager;
-    TicTacToe game;
+    char again = 'y';
 
-    std::string first_player;
-    char choice = 'Y';
-
-    while (choice == 'Y' || choice == 'y')
+    while (again == 'y' || again == 'Y')
     {
+        int choice;
+        std::cout << "Play TicTacToe 3 or 4? Enter 3 or 4: ";
+        std::cin >> choice;
+
+        std::unique_ptr<TicTacToe> game;
+
+        if (choice == 3)
+            game = std::make_unique<TicTacToe3>();
+        else
+            game = std::make_unique<TicTacToe4>();
+
+        std::string first;
         std::cout << "Enter first player (X or O): ";
-        std::cin >> first_player;
+        std::cin >> first;
 
-        game.start_game(first_player);
+        game->start_game(first);
 
-        while (!game.game_over())
+        while (!game->game_over())
         {
-            std::cin >> game;   // input move
-            std::cout << game;  // show board
-            std::cout << "\n";
+            std::cin >> *game;
+            std::cout << *game << "\n";
         }
 
-        std::cout << "Winner: " << game.get_winner() << "\n";
+        std::cout << "Winner: " << game->get_winner() << "\n";
 
         manager.save_game(game);
 
         int o, x, t;
         manager.get_winner_total(o, x, t);
 
-        std::cout << "Scoreboard -> X Wins: " << x
-                  << "  O Wins: " << o
-                  << "  Ties: " << t << "\n\n";
+        std::cout << "X wins: " << x
+                  << " | O wins: " << o
+                  << " | Ties: " << t << "\n";
 
-        std::cout << "Play again? (Y/N): ";
-        std::cin >> choice;
+        std::cout << "Play again? (y/n): ";
+        std::cin >> again;
     }
 
     return 0;
